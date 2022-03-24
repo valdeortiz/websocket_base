@@ -1,0 +1,15 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRouteTCP
+metadata:
+  name: fast-pos
+  namespace: be
+spec:
+  entryPoints:
+    - fastpos
+  routes:
+  - match: HostSNI(`*`)
+    kind: Rule
+    services:
+    - name: fast-pos
+      port: 8000
+---

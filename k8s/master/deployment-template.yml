@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fast-pos
+  namespace: be
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: fast-pos
+  template:
+    metadata:
+      labels:
+        app: fast-pos
+    spec:
+      containers:
+      - name: fast-pos
+        image: registry.z1.mastarjeta.net/be/fast-pos:%VERSION%
+        command: ["gunicorn"]
+        args: ["-w", "3", "-k", "uvicorn.workers.UvicornWorker", "web_server:app", "--bind", "0.0.0.0:8000"]
+
+      imagePullSecrets:
+        - name: federegistry
